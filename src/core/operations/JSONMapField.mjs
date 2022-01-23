@@ -44,44 +44,30 @@ class JSONMapField extends Operation {
     }
 
     /**
-     * Converts JSON to a CSV equivalent.
+     * Maps a JSON field.
      *
-     * @param {boolean} force - Whether to force conversion of data to fit in a cell
-     * @returns {string}
+     * @returns {JSON}
      */
-    toCSV(force=false) {
-        const self = this;
-        // If the JSON is an array of arrays, this is easy
-        if (this.flattened[0] instanceof Array) {
-            return this.flattened
-                .map(row => row
-                    .map(d => self.escapeCellContents(d, force))
-                    .join(this.cellDelim)
-                )
-                .join(this.rowDelim) +
-                this.rowDelim;
+    map() {
+        for (let item of this.input) {
+          let newItem = this.mapItem(item);
         }
-
-        // If it's an array of dictionaries...
-        const header = Object.keys(this.flattened[0]);
-        return header
-            .map(d => self.escapeCellContents(d, force))
-            .join(this.cellDelim) +
-            this.rowDelim +
-            this.flattened
-                .map(row => header
-                    .map(h => row[h])
-                    .map(d => self.escapeCellContents(d, force))
-                    .join(this.cellDelim)
-                )
-                .join(this.rowDelim) +
-                this.rowDelim;
+    }
+    
+    /**
+     * Maps a JSON field.
+     *
+     * @param {JSON} item
+     * @returns {JSON}
+     */
+    mapItem(item) {
+        return item;
     }
 
     /**
      * @param {JSON} input
      * @param {Object[]} args
-     * @returns {string}
+     * @returns {JSON}
      */
     run(input, args) {
         const [sourceField, targetField, targetFieldname] = args;
@@ -91,53 +77,26 @@ class JSONMapField extends Operation {
         this.targetField = targetField;
         this.targetFieldname = targetFieldname;
         this.input = input;
-        if (!(this.flattened instanceof Array)) {
-            this.flattened = [input];
+        let single = false;
+        if (!(this.input instanceof Array)) {
+            this.input = [input];
+            single = true;
         }
+        
+        let output = [];
 
         try {
-            return this.toCSV();
+            output = this.map();
         } catch (err) {
-            try {
-                this.flattened = flatten(input);
-                if (!(this.flattened instanceof Array)) {
-                    this.flattened = [this.flattened];
-                }
-                return this.toCSV(true);
-            } catch (err) {
-                throw new OperationError("Unable to parse JSON to CSV: " + err.toString());
-            }
+            output = this.input;
         }
+        
+        if (single) {
+            return output[0];
+        } 
+        
+        return output;
     }
-
-    /**
-     * Correctly escapes a cell's contents based on the cell and row delimiters.
-     *
-     * @param {string} data
-     * @param {boolean} force - Whether to force conversion of data to fit in a cell
-     * @returns {string}
-     */
-    escapeCellContents(data, force=false) {
-        if (typeof data === "number") data = data.toString();
-        if (force && typeof data !== "string") data = JSON.stringify(data);
-
-        // Double quotes should be doubled up
-        data = data.replace(/"/g, '""');
-
-        // If the cell contains a cell or row delimiter or a double quote, it must be enclosed in double quotes
-        if (
-            data.indexOf(this.cellDelim) >= 0 ||
-            data.indexOf(this.rowDelim) >= 0 ||
-            data.indexOf("\n") >= 0 ||
-            data.indexOf("\r") >= 0 ||
-            data.indexOf('"') >= 0
-        ) {
-            data = `"${data}"`;
-        }
-
-        return data;
-    }
-
 }
 
-export default JSONToCSV;
+export default JSONMapField;
