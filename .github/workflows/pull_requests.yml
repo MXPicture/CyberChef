@@ -3,6 +3,8 @@ name: "Pull Requests"
 on:
   pull_request:
     types: [synchronize, opened, reopened]
+    
+  workflow_dispatch:
 
 jobs:
   main:
