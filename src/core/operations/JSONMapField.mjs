@@ -4,6 +4,7 @@
  * @license Apache-2.0
  */
 
+import jpath from "jsonpath";
 import Operation from "../Operation.mjs";
 import OperationError from "../errors/OperationError.mjs";
 
@@ -61,6 +62,12 @@ class JSONMapField extends Operation {
      * @returns {JSON}
      */
     mapItem(item) {
+        try {
+            results = jpath.query(obj, query);
+        } catch (err) {
+            throw new OperationError(`Invalid JPath expression: ${err.message}`);
+        }
+        
         return item;
     }
 
