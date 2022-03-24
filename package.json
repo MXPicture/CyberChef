@@ -1,6 +1,6 @@
 {
   "name": "cyberchef",
-  "version": "9.32.3",
+  "version": "9.32.4",
   "description": "The Cyber Swiss Army Knife for encryption, encoding, compression and data analysis.",
   "author": "n1474335 <n1474335@gmail.com>",
   "homepage": "https://gchq.github.io/CyberChef",
@@ -133,7 +133,7 @@
     "lodash": "^4.17.21",
     "loglevel": "^1.7.1",
     "loglevel-message-prefix": "^3.0.0",
-    "markdown-it": "^12.2.0",
+    "markdown-it": "^12.3.2",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
     "ngeohash": "^0.6.3",
