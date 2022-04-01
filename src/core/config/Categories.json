@@ -83,6 +83,8 @@
             "RC2 Decrypt",
             "RC4",
             "RC4 Drop",
+            "SM4 Encrypt",
+            "SM4 Decrypt",
             "ROT13",
             "ROT47",
             "XOR",
@@ -120,7 +122,8 @@
             "Multiple Bombe",
             "Typex",
             "Lorenz",
-            "Colossus"
+            "Colossus",
+            "SIGABA"
         ]
     },
     {

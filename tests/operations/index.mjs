@@ -75,6 +75,7 @@ import "./tests/SeqUtils.mjs";
 import "./tests/SetDifference.mjs";
 import "./tests/SetIntersection.mjs";
 import "./tests/SetUnion.mjs";
+import "./tests/SM4.mjs";
 import "./tests/StrUtils.mjs";
 import "./tests/SymmetricDifference.mjs";
 import "./tests/TextEncodingBruteForce.mjs";
@@ -109,6 +110,8 @@ import "./tests/JA3Fingerprint.mjs";
 import "./tests/JA3SFingerprint.mjs";
 import "./tests/HASSH.mjs";
 import "./tests/GetAllCasings.mjs";
+import "./tests/SIGABA.mjs";
+
 
 // Cannot test operations that use the File type yet
 // import "./tests/SplitColourChannels.mjs";
