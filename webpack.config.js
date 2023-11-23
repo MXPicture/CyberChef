@@ -109,10 +109,13 @@ module.exports = {
             "buffer": require.resolve("buffer/"),
             "crypto": require.resolve("crypto-browserify"),
             "stream": require.resolve("stream-browserify"),
-            "zlib": require.resolve("browserify-zlib")
+            "zlib": require.resolve("browserify-zlib"),
+            "process": false
         }
     },
     module: {
+        // argon2-browser loads argon2.wasm by itself, so Webpack should not load it
+        noParse: /argon2\.wasm$/,
         rules: [
             {
                 test: /\.m?js$/,
@@ -131,6 +134,12 @@ module.exports = {
                 options: {
                     additionalCode: "var jQuery = false;"
                 }
+            },
+            {
+                // Load argon2.wasm as base64-encoded binary file expected by argon2-browser
+                test: /argon2\.wasm$/,
+                loader: "base64-loader",
+                type: "javascript/auto"
             },
             {
                 test: /prime.worker.min.js$/,
@@ -162,19 +171,6 @@ module.exports = {
                     },
                     "css-loader",
                     "postcss-loader",
-                ]
-            },
-            {
-                test: /\.scss$/,
-                use: [
-                    {
-                        loader: MiniCssExtractPlugin.loader,
-                        options: {
-                            publicPath: "../"
-                        }
-                    },
-                    "css-loader",
-                    "sass-loader",
                 ]
             },
             {

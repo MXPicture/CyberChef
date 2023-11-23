@@ -131,12 +131,12 @@ const getFeature = function() {
 
             // PR IDs
             prIDs.forEach(prID => {
-                changelogData = changelogData.replace(/(\n\[#[^\]]+\]: https:\/\/github.com\/gchq\/CyberChef\/pull\/[^\n]+\n)\n/, "$1" + prID + "\n\n");
+                changelogData = changelogData.replace(/(\n\[#[^\]]+\]: https:\/\/github.com\/gchq\/CyberChef\/pull\/[^\n]+\n)\n*$/, "$1" + prID + "\n\n");
             });
 
             fs.writeFileSync(path.join(process.cwd(), "CHANGELOG.md"), changelogData);
 
-            console.log("Written CHANGELOG.md");
+            console.log("Written CHANGELOG.md\nCommit changes and then run `npm version minor`.");
         }
     });
 };
