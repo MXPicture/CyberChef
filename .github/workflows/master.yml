@@ -21,6 +21,7 @@ jobs:
 
     - name: Install
       run: |
+        export DETECT_CHROMEDRIVER_VERSION=true
         npm install
         npm run setheapsize
 
